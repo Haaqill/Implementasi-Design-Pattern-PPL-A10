@@ -1,6 +1,20 @@
 # Implementasi-Design-Pattern-PPL-A10
 
-### pesanmakan.cpp
+|Baris|Penjelasan|
+|-----|----------|
+|1-9|Mengimpor library standar C++ yang dibutuhkan (iostream, string, vector, map, memory, limits, sstream) dan mendeklarasikan using namespace std; untuk kemudahan penulisan.|
+|10-24|Mendefinisikan fungsi utilitas getValidIntInput(). Fungsi ini menangani error handling jika pengguna memasukkan karakter huruf atau membiarkan input kosong (hanya menekan Enter), sehingga program terhindar dari infinite loop (hang).|
+|26-49|Mendefinisikan Strategy Pattern. Membuat interface PaymentStrategy dan mengimplementasikan algoritma konkretnya pada class CODPayment dan TransferPayment. Ini memungkinkan metode pembayaran diganti secara dinamis saat runtime tanpa menggunakan pernyataan if-else yang rumit di kelas Pesanan. |
+|51-95|Mendefinisikan Data Models atau Entitas Utama aplikasi, yang terdiri dari class MenuItem, Order (Pesanan), Buyer (Pembeli), dan Seller (Penjual). Masing-masing dilengkapi dengan konstruktor bawaan (default constructor).|
+|97-101|Mendeklarasikan In-Memory Database menggunakan tipe data std::map dan std::vector untuk menyimpan data Pembeli, Penjual, dan Pesanan sementara selama program berjalan.|
+|103-115|Mendefinisikan CQRS - Data Transfer Object (DTO). Membuat struct OrderDTO dan MenuDTO yang berfungsi sebagai wadah data ringan yang aman untuk dikirimkan dan dibaca oleh antarmuka (UI).  |
+|117-168|Mendefinisikan CQRS - Query Service (Sisi Read). Kelas ini murni hanya untuk operasi pembacaan data. Fungsi-fungsinya (seperti melihat rekomendasi, mengecek riwayat, mengecek status) mengambil data dari database lalu memetakannya ke dalam bentuk DTO tanpa mengubah state atau nilai data aslinya.|
+|170-205|Mendefinisikan CQRS - Command Service (Sisi Write). Kelas ini secara eksklusif bertugas untuk operasi yang mengubah state sistem (Create, Update, Delete). Contohnya seperti memverifikasi penjual, membuat pesanan baru, dan mengubah profil kesehatan.  |
+|207-209|Melakukan instansiasi objek global untuk QueryService dan CommandService agar dapat dipanggil dari berbagai fungsi antarmuka menu (UI).|
+|211-250|Mengerjakan antarmuka dan logika UI untuk Aktor Admin, yang memungkinkan admin untuk memverifikasi akun penjual baru atau menghapus data penjual dengan memanggil fungsi pada CommandService.|
+|252-318|Mengerjakan antarmuka dan logika UI untuk Aktor Penjual, memungkinkan penjual mengelola katalog menu, melihat notifikasi pesanan melalui QueryService, dan memperbarui status pesanan melalui CommandService.|
+|320-400|Mengerjakan antarmuka dan logika UI untuk Aktor Pembeli. Di sinilah pengguna berinteraksi untuk melihat menu, memilih metode pembayaran (yang memicu algoritma Strategy Pattern), serta melihat rekomendasi yang difilter alerginya melalui Query Service.|
+|402-452|Mendefinisikan fungsi utama main(). Fungsi ini memasukkan dummy data untuk simulasi, lalu menjalankan sistem infinite loop (while(true)) yang berfungsi sebagai menu Login awal untuk memisahkan hak akses antara Admin, Penjual, dan Pembeli.|
 ```
 #include <iostream>
 #include <string>
